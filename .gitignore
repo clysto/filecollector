@@ -7,4 +7,4 @@
 /tmp
 .vscode
 .air.toml
-/release
+dist/
