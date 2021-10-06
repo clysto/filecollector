@@ -1,0 +1,85 @@
+body {
+  font-family: monospace;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 16px;
+  padding: 1em;
+  background-color: antiquewhite;
+}
+
+nav {
+  padding: 0.5em;
+  display: flex;
+  border-top: 2px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+main {
+  padding: 0.5em;
+  border-bottom: 2px solid #000;
+}
+
+button {
+  background: none;
+  font-weight: bold;
+  padding: 0.2em 0.5em;
+  cursor: pointer;
+  border: 1px solid #000;
+}
+
+table {
+  display: block;
+  border-spacing: 2px;
+  max-width: 100%;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+input {
+  appearance: none;
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none;
+  background: none;
+  /* background-color: rgba(0, 0, 0, 0.1); */
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  color: #424242;
+  padding: 0.5em;
+  margin-top: 1em;
+}
+
+label {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.nav-item {
+  margin-left: 1em;
+}
+
+.title {
+  flex: 1;
+  font-weight: bold;
+}
+
+.inputs {
+  margin-bottom: 0.5em;
+}
+
+.size-col {
+  text-align: right;
+}
+
+.size-col,
+.date-col {
+  -webkit-padding-start: 2em;
+}

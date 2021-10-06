@@ -1,0 +1,20 @@
+{{ define "main" }}
+  <table class="file-list">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Files }}
+        <tr>
+          <td>{{ .Name }}</td>
+          <td class="size-col">{{ .Size }}</td>
+          <td class="date-col">{{ .ModTime | date "2006-01-02 15:04:05" }}</td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+{{ end }}

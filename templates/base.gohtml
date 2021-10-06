@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/assets/normalize.css" />
+    <link rel="stylesheet" href="/assets/main.css" />
+    <title>{{ .Title }}</title>
+  </head>
+  <body>
+    <nav>
+      <span href="/" class="title">{{ .Title }}</span>
+      <a href="/" class="nav-item">Upload</a>
+      <a href="/list" class="nav-item">Files</a>
+    </nav>
+    <main>
+      {{ block "main" . }}
+      {{ end }}
+    </main>
+    <footer>
+      Powered by FileCollector 0.0.1
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+/files
+.idea
+.DS_Store
+/config.json
+/filecollector.json
+/filecollector
+/tmp
+.vscode
+.air.toml
