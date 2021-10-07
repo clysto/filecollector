@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -43,6 +44,14 @@ func embeddedFH(config goview.Config, tmpl string) (string, error) {
 	return string(bytes), err
 }
 
+func funcMap() template.FuncMap {
+	funcs := sprig.FuncMap()
+	funcs["version"] = func() string {
+		return version.Version
+	}
+	return funcs
+}
+
 func main() {
 	configPath := flag.String("c", "filecollector.json", "config file path")
 	showVersion := flag.Bool("v", false, "show version")
@@ -58,7 +67,7 @@ func main() {
 		Root:      "templates",
 		Extension: ".gohtml",
 		Master:    "base",
-		Funcs:     sprig.FuncMap(),
+		Funcs:     funcMap(),
 	})
 
 	gv.SetFileHandler(embeddedFH)
