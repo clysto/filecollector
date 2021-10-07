@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 
 	"github.com/Masterminds/sprig"
-
+	"github.com/clysto/filecollector/version"
 	"github.com/foolin/goview"
 )
 
@@ -45,7 +45,13 @@ func embeddedFH(config goview.Config, tmpl string) (string, error) {
 
 func main() {
 	configPath := flag.String("c", "filecollector.json", "config file path")
+	showVersion := flag.Bool("v", false, "show version")
 	flag.Parse()
+
+	if *showVersion {
+		fmt.Printf("File Browser v%s/%s\n", version.Version, version.CommitSHA)
+		return
+	}
 
 	// 初始化模板引擎
 	gv := goview.New(goview.Config{
