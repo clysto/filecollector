@@ -7,7 +7,7 @@ require (
 	github.com/foolin/goview v0.3.0
 	github.com/gorilla/mux v1.8.0
 	github.com/hoisie/mustache v0.0.0-20160804235033-6375acf62c69
-	github.com/tomasen/realip v0.0.0-20180522021738-f0c99a92ddce
+	github.com/pkg/errors v0.9.1
 )
 
 require (

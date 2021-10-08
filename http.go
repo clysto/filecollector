@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -12,23 +13,33 @@ import (
 	"github.com/foolin/goview"
 	"github.com/gorilla/mux"
 	"github.com/hoisie/mustache"
-	"github.com/tomasen/realip"
+	"github.com/pkg/errors"
 )
 
 func makeHandler(fn handleFunc, c Context) http.Handler {
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		c.SetResponseWriter(w)
 		c.SetRequest(r)
 		status, err := fn(c)
-		if status >= 400 || err != nil {
-			clientIP := realip.FromRequest(r)
-			log.Printf("%s: %v %s %v", r.URL.Path, status, clientIP, err)
-		} else {
-			clientIP := realip.FromRequest(r)
-			log.Printf("%s: %v %s", r.URL.Path, status, clientIP)
+		username := "-"
+		if r.URL.User != nil {
+			if name := r.URL.User.Username(); name != "" {
+				username = name
+			}
+		}
+		uri := r.RequestURI
+		if r.ProtoMajor == 2 && r.Method == "CONNECT" {
+			uri = r.Host
+		}
+		if uri == "" {
+			uri = r.URL.RequestURI()
+		}
+		log.Printf("%s - %s \"%s %s %s\" %d", r.Host, username, r.Method, uri, r.Proto, status)
+		if err != nil {
+			err = errors.Errorf("%+v", err)
+			fmt.Printf("\n%+v\n\n", err)
 		}
 	})
-	return handler
 }
 
 func homeHandler(c Context) (int, error) {
@@ -66,7 +77,8 @@ func uploadHandler(c Context) (int, error) {
 func listHandler(c Context) (int, error) {
 	files, err := ioutil.ReadDir(c.GetStorage())
 	if err != nil {
-		return http.StatusBadRequest, err
+		c.Render("500", nil)
+		return http.StatusInternalServerError, err
 	}
 	c.Render("list", goview.M{"Files": files, "Title": "All Files"})
 	return http.StatusOK, nil
