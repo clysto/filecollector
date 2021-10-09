@@ -1,43 +1,16 @@
-{{ define "main" }}
-  <form action="/upload" method="post" enctype="multipart/form-data">
-    <table class="inputs">
-      <tbody>
-        {{ range .Inputs }}
-          <tr>
-            <td>
-              <label for="{{ .Name }}">{{ .Label }}</label>
-            </td>
-            <td>
-              <input id="{{ .Name }}" name="{{ .Name }}" type="text" required />
-            </td>
-          </tr>
-        {{ end }}
-        <tr>
-          <td>
-            <label for="file"> File </label>
-          </td>
-          <td>
-            <input id="fake-file" readonly />
-            <input hidden id="file" name="file" type="file" required />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+{{ define "nav" }}
+  <span href="/" class="title">{{ .Title }}</span>
+{{ end }}
 
-    <button type="submit">Submit</button>
-    <button type="reset">Reset</button>
-  </form>
-  <script>
-    document.querySelector('#fake-file').addEventListener('click', function () {
-      document.querySelector('#file').click();
-    });
-    document.querySelector('#file').addEventListener('change', function (e) {
-      var file = e.target.files[0];
-      if (file) {
-        document.querySelector('#fake-file').value = file.name;
-      } else {
-        document.querySelector('#fake-file').value = '';
-      }
-    });
-  </script>
+{{ define "main" }}
+  <h4>All Forms:</h4>
+  <ol>
+    {{ range .Forms }}
+      <li>
+        <a href="/{{ .Prefix }}">
+          {{ .Title }}
+        </a>
+      </li>
+    {{ end }}
+  </ol>
 {{ end }}

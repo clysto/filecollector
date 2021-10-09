@@ -13,16 +13,17 @@
   </head>
   <body>
     <nav>
-      <span href="/" class="title">{{ .Title }}</span>
-      <a href="/" class="nav-item">Upload</a>
-      <a href="/list" class="nav-item">Files</a>
+      {{ block "nav" . }}
+        <span href="/" class="title">File Collector</span>
+      {{ end }}
     </nav>
     <main>
       {{ block "main" . }}
       {{ end }}
     </main>
     <footer>
-      Powered by FileCollector {{ version }}
+      Powered by FileCollector
+      {{ version }}
     </footer>
   </body>
 </html>

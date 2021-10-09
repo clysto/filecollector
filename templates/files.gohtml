@@ -1,3 +1,12 @@
+{{ define "nav" }}
+  <span href="/" class="title">{{ .Title }}</span>
+  <a href="/" class="nav-item">Home</a>
+  <a href="/{{ .Form.Prefix }}" class="nav-item">Upload</a>
+  <a href="/{{ .Form.Prefix }}/files" class="nav-item">
+    <strong>Files</strong>
+  </a>
+{{ end }}
+
 {{ define "main" }}
   <table class="file-list">
     <thead>

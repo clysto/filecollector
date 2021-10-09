@@ -5,9 +5,8 @@ go 1.17
 require (
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/foolin/goview v0.3.0
-	github.com/gorilla/mux v1.8.0
+	github.com/go-chi/chi/v5 v5.0.4
 	github.com/hoisie/mustache v0.0.0-20160804235033-6375acf62c69
-	github.com/pkg/errors v0.9.1
 )
 
 require (

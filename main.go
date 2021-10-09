@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"html/template"
@@ -12,6 +11,8 @@ import (
 	"path/filepath"
 
 	"github.com/Masterminds/sprig"
+	"github.com/clysto/filecollector/config"
+	fchttp "github.com/clysto/filecollector/http"
 	"github.com/clysto/filecollector/version"
 	"github.com/foolin/goview"
 )
@@ -21,22 +22,6 @@ var assetsFS embed.FS
 
 //go:embed templates
 var templatesFS embed.FS
-
-type Input struct {
-	Name  string `json:"name"`
-	Label string `json:"label"`
-}
-
-type Config struct {
-	Host     string  `json:"host"`
-	Port     int     `json:"port"`
-	Storage  string  `json:"storage"`
-	Title    string  `json:"title"`
-	Inputs   []Input `json:"inputs"`
-	Filename string  `json:"filename"`
-}
-
-type handleFunc func(c Context) (int, error)
 
 func embeddedFH(config goview.Config, tmpl string) (string, error) {
 	path := filepath.Join(config.Root, tmpl)
@@ -62,7 +47,6 @@ func main() {
 		return
 	}
 
-	// 初始化模板引擎
 	gv := goview.New(goview.Config{
 		Root:      "templates",
 		Extension: ".gohtml",
@@ -72,33 +56,23 @@ func main() {
 
 	gv.SetFileHandler(embeddedFH)
 
-	// 加载配置
-	f, err := os.Open(*configPath)
+	conf, err := config.ParseConfig(*configPath)
+
 	if err != nil {
-		log.Fatal(err)
-	}
-	config := &Config{
-		Host:    "0.0.0.0",
-		Port:    8080,
-		Storage: "files",
-	}
-	err = json.NewDecoder(f).Decode(config)
-	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		return
 	}
 
-	// 上下文
-	c := &context{
-		template: gv,
-		config:   config,
+	r, err := fchttp.NewHandler(conf, gv)
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err)
+		return
 	}
 
-	r := NewHandler(c)
+	http.Handle("/assets/", http.StripPrefix("", http.FileServer(http.FS(assetsFS))))
 	http.Handle("/", r)
 
-	log.Printf("listening on http://%s:%d\n", config.Host, config.Port)
-	err = http.ListenAndServe(fmt.Sprintf("%s:%d", config.Host, config.Port), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("listening on http://%s:%d\n", conf.Host, conf.Port)
+	http.ListenAndServe(fmt.Sprintf("%s:%d", conf.Host, conf.Port), nil)
 }
