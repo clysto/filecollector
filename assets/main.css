@@ -27,6 +27,11 @@ button {
   border: 1px solid #000;
 }
 
+button:hover {
+  background: #000;
+  color: #fff;
+}
+
 table {
   display: block;
   border-spacing: 2px;
@@ -35,13 +40,16 @@ table {
   white-space: nowrap;
 }
 
-input {
+input[type='text'] {
   appearance: none;
   border: none;
   border-bottom: 1px solid #000;
   outline: none;
   background: none;
-  /* background-color: rgba(0, 0, 0, 0.1); */
+}
+
+input[type='text']:focus {
+  box-shadow: 0px 1px 0 0 #000;
 }
 
 footer {
@@ -82,4 +90,8 @@ a {
 .size-col,
 .date-col {
   -webkit-padding-start: 2em;
+}
+
+.form {
+  margin: 1.5em 0;
 }

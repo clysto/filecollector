@@ -29,7 +29,7 @@ func (h *Handler) formPage(w http.ResponseWriter, r *http.Request) {
 	prefix := chi.URLParam(r, "prefix")
 	form := h.conf.GetForm(prefix)
 	if form == nil {
-		http.Error(w, http.StatusText(404), 404)
+		h.notFoundPage(w, r)
 		return
 	}
 	h.Render(w, "form", form)
@@ -39,7 +39,7 @@ func (h *Handler) filesPage(w http.ResponseWriter, r *http.Request) {
 	prefix := chi.URLParam(r, "prefix")
 	form := h.conf.GetForm(prefix)
 	if form == nil {
-		http.Error(w, http.StatusText(404), 404)
+		h.notFoundPage(w, r)
 		return
 	}
 	files, err := ioutil.ReadDir(form.Storage)
@@ -59,7 +59,7 @@ func (h *Handler) uploadHandler(w http.ResponseWriter, r *http.Request) {
 	prefix := chi.URLParam(r, "prefix")
 	form := h.conf.GetForm(prefix)
 	if form == nil {
-		http.Error(w, http.StatusText(404), 404)
+		h.notFoundPage(w, r)
 		return
 	}
 	data := map[string]string{}
@@ -79,6 +79,11 @@ func (h *Handler) uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.Render(w, "upload", goview.M{"Message": "Submitted successfully."})
+}
+
+func (h *Handler) notFoundPage(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	h.Render(w, "404", nil)
 }
 
 func (h *Handler) Render(w http.ResponseWriter, name string, data interface{}) {
@@ -102,11 +107,10 @@ func NewHandler(conf *config.Config, viewEngine *goview.ViewEngine) (http.Handle
 		viewEngine: viewEngine,
 	}
 	r.Use(middleware.Logger)
-
+	r.NotFound(h.notFoundPage)
 	r.Get("/", h.homePage)
 	r.Get("/{prefix}", h.formPage)
 	r.Post("/{prefix}/upload", h.uploadHandler)
 	r.Get("/{prefix}/files", h.filesPage)
-
 	return h, nil
 }
