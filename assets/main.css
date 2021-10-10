@@ -95,3 +95,18 @@ a {
 .form {
   margin: 1.5em 0;
 }
+
+.ddl {
+  background-color: #038118;
+  color: #fff;
+}
+
+.over {
+  background-color: #7c0101;
+  color: #fff;
+}
+
+.over-title {
+  text-align: center;
+  color: #7c0101;
+}

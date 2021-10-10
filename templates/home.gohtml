@@ -10,6 +10,19 @@
         <a href="/{{ .Prefix }}">
           {{ .Title }}
         </a>
+        {{ if .Deadline }}
+          {{ if .Deadline | overdue }}
+            <span class="over">
+              deadline:
+              {{ .Deadline | date "2006-01-02 15:04:05" }}
+            </span>
+          {{ else }}
+            <span class="ddl">
+              deadline:
+              {{ .Deadline | date "2006-01-02 15:04:05" }}
+            </span>
+          {{ end }}
+        {{ end }}
       </li>
     {{ end }}
   </ol>

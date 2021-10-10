@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/Masterminds/sprig"
 	"github.com/clysto/filecollector/config"
@@ -34,6 +35,12 @@ func funcMap() template.FuncMap {
 	funcs["version"] = func() string {
 		return version.Version
 	}
+	funcs["overdue"] = func(t *time.Time) bool {
+		if t == nil {
+			return false
+		}
+		return t.Before(time.Now())
+	}
 	return funcs
 }
 
@@ -43,7 +50,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("File Browser v%s/%s\n", version.Version, version.CommitSHA)
+		fmt.Printf("File Collector v%s/%s\n", version.Version, version.CommitSHA)
 		return
 	}
 

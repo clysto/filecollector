@@ -8,38 +8,45 @@
 {{ end }}
 
 {{ define "main" }}
-  <form
-    action="/{{ .Prefix }}/upload"
-    method="post"
-    enctype="multipart/form-data"
-  >
-    <div class="form">
-      <table class="inputs">
-        <tbody>
-          {{ range .Inputs }}
-            <tr>
-              <td>
-                <label for="{{ .Name }}">{{ .Label }}</label>
-              </td>
-              <td>
-                <input
-                  id="{{ .Name }}"
-                  name="{{ .Name }}"
-                  type="text"
-                  {{ if .Pattern }}
-                    pattern = "{{ .Pattern }}"
-                  {{ end }}
-                  required
-                />
-              </td>
-            </tr>
-          {{ end }}
-        </tbody>
-      </table>
-      <input id="file" name="file" type="file" required />
-    </div>
+  {{ if (.Deadline | overdue) }}
+    <h1 class="over-title">Closed!</h1>
+  {{ else }}
+    <form
+      action="/{{ .Prefix }}/upload"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="form">
+        <table class="inputs">
+          <tbody>
+            {{ range .Inputs }}
+              <tr>
+                <td>
+                  <label for="{{ .Name }}">{{ .Label }}</label>
+                </td>
+                <td>
+                  <input
+                    id="{{ .Name }}"
+                    name="{{ .Name }}"
+                    type="text"
+                    {{ if .Pattern }}
+                      pattern = "{{ .Pattern }}"
+                    {{ end }}
+                    {{ if .Pattern }}
+                      placeholder = "{{ .Pattern }}"
+                    {{ end }}
+                    required
+                  />
+                </td>
+              </tr>
+            {{ end }}
+          </tbody>
+        </table>
+        <input id="file" name="file" type="file" required />
+      </div>
 
-    <button type="submit">Submit</button>
-    <button type="reset">Reset</button>
-  </form>
+      <button type="submit">Submit</button>
+      <button type="reset">Reset</button>
+    </form>
+  {{ end }}
 {{ end }}

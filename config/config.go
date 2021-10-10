@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"os"
+	"time"
 )
 
 type Input struct {
@@ -12,11 +13,12 @@ type Input struct {
 }
 
 type Form struct {
-	Prefix           string  `json:"prefix"`
-	Storage          string  `json:"storage"`
-	Title            string  `json:"title"`
-	Inputs           []Input `json:"inputs"`
-	FilenameTemplate string  `json:"filenameTemplate"`
+	Prefix           string     `json:"prefix"`
+	Storage          string     `json:"storage"`
+	Title            string     `json:"title"`
+	Inputs           []Input    `json:"inputs"`
+	FilenameTemplate string     `json:"filenameTemplate"`
+	Deadline         *time.Time `json:"deadline"`
 }
 
 type Config struct {
