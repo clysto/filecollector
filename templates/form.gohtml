@@ -30,10 +30,7 @@
                     name="{{ .Name }}"
                     type="text"
                     {{ if .Pattern }}
-                      pattern = "{{ .Pattern }}"
-                    {{ end }}
-                    {{ if .Pattern }}
-                      placeholder = "{{ .Pattern }}"
+                      pattern = "{{ .Pattern }}" placeholder = "{{ .Pattern }}"
                     {{ end }}
                     required
                   />
